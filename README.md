@@ -23,7 +23,7 @@
     - [DHCP Derver Configuration](#dhcp-server-configuration)
 
 # Introduction
- <div align="justify"> Designing a Local Area Network (LAN) for the Institute requires careful consideration of devices to meet the organization’s needs efficiently. The primary objective is to establish a high-performance, reliable, and secure network infrastructure capable of supporting both current and future demands. This involves selecting devices that offer robust performance, advanced security features, scalability, and manageability. By integrating a Cisco 3725 router, HP Aruba switches, and Windows Server 2019, the proposed design ensures seamless connectivity, secure communication, and efficient resource management to support the institute’s administrative and academic activities effectively.
+ <div align="justify"> Designing a Local Area Network (LAN) for the Institute requires careful consideration of devices to meet the organization's needs efficiently. The primary objective is to [...]
  </div>
 
 
@@ -45,18 +45,18 @@
 ## Used Hardwares
 ### Routers
 #### Model: Cisco 3725
-- For routing purpose I have chosen Cisco 3725 model router, it stands out as the backbone of the network. Because of its advanced routing capabilities, scalability and robust security features. It has efficient data transmission while ensuring with ACL – Access control lists. Moreover with VPN feature in respective router institute can securely connect their branches. Additionally, the inclusion of redundant protocols such as HSRP – Hot Standby Router Protocol and VRRP – Virtual Router Redundancy Protocol, enhance redundancy to provide seamless failover and reliability.
+- For routing purpose I have chosen Cisco 3725 model router, it stands out as the backbone of the network. Because of its advanced routing capabilities, scalability and robust security features. I[...]
 
 ### Switches
 #### Model: HP Aruba Switch
-- I have chosen HP Aruba switch to connect the end devices. With its efficient STP – Spanning Tree Protocol, LACP – Link Aggregation Control Protocol and VLAN segmentation enhance scalability and ensures fault tolerance by enabling redundancy and load balancing. VLAN segmentation enhance securely and resource allocation.
+- I have chosen HP Aruba switch to connect the end devices. With its efficient STP – Spanning Tree Protocol, LACP – Link Aggregation Control Protocol and VLAN segmentation enhance scalability [...]
 
 ### Servers
 #### Windows Server 2019
-- I have chosen “Windows Server 2019” to host critical services like Active Directory, DHCP and DNS. It centralizes resource management, streamlines IT operations and ensures efficient administration. Robust security measures protect sensitive data. And scalability accommodates future needs and guaranteeing a robust, secure and adaptable network infrastructure.
+- I have chosen "Windows Server 2019" to host critical services like Active Directory, DHCP and DNS. It centralizes resource management, streamlines IT operations and ensures efficient adminis[...]
 
 #### Network Management System : _Zabbix_
-- I have chosen Zabbix as the network monitoring solution to ensure comprehensive oversight of the infrastructure. Zabbix provides real-time monitoring of network devices, servers, and applications, allowing for proactive identification and resolution of potential issues. Its robust alerting system notifies administrators of anomalies, minimizing downtime and enhancing reliability.
+- I have chosen Zabbix as the network monitoring solution to ensure comprehensive oversight of the infrastructure. Zabbix provides real-time monitoring of network devices, servers, and application[...]
 
 ## Network Device Configurations
 ### Router Configuration
@@ -76,9 +76,9 @@ Interface f0/0.XX(10) is variable and encapsulation dot1Q XX(10) is same as VLAN
   Pri-Router(config-subif)#standby 10 priority 105
   Pri-Router(config-subif)#standby 10 preempt
 ```
-Select group number for HSRP between **0 – 255**, this number should be same on all routers which are participating in HSRP, in above scenario is “10” and it is variable.
+Select group number for HSRP between **0 – 255**, this number should be same on all routers which are participating in HSRP, in above scenario is "10" and it is variable.
 
-Configure the virtual IP Address for HSRP, set up priority with group number for which router gets higher priority. The here preempt used for regain its active state if it becomes available after being In standby mode.
+Configure the virtual IP Address for HSRP, set up priority with group number for which router gets higher priority. The here preempt used for regain its active state if it becomes available after [...]
 
 ```bash 
   Pri-Router(config)#interface FastEthernet0/0
@@ -92,11 +92,11 @@ Above statement is used to track the status of other external interface, and all
   Pri-Router(config)#interface FastEthernet0/0.10
   Pri-Router(config-subif)#ip helper-address 192.168.60.4
 ```
-DHCP relay helps devices like end devices in different network sections to get IP Address from a central server, here according to the requirement DHCP server is placed in Server room. Here **Window Server 2019 (IP: 192.168.60.4) Work as DHCP server**.
+DHCP relay helps devices like end devices in different network sections to get IP Address from a central server, here according to the requirement DHCP server is placed in Server room. Here **Wind[...]
 
 * SNMP Configuration for Cisco Router
 
-Simple Network Management Protocol is important for management and monitoring of network devices. It allows to track respective device performance, optimization of network resources and identifying the issues, and this facilitate proactive troubleshooting with real-time alert for network events. And this allows centralized management of network infrastructure moreover this enhance reliability, efficiency and security of network.
+Simple Network Management Protocol is important for management and monitoring of network devices. It allows to track respective device performance, optimization of network resources and identifyin[...]
 
 ```bash 
   Pri-Router(config)# snmp-server community <secret> RO/RW
@@ -114,14 +114,14 @@ Here <secret> is typically a password for SNMP of the router.
   Pri-Router(config-isakmp)# exit
   Pri-Router(config)# crypto ipsec transform-set headTobranch esp-aes 256 esp-sha-hmac
   Pri-Router(cfg-crypto-trans)# exit
-  Pri-Router(config)# crypto map BCAS-VPN 101 ipsec-isakmp
+  Pri-Router(config)# crypto map site-vpn 101 ipsec-isakmp
   Pri-Router(config-crypto-map)# set peer 172.13.42.234 // IP Address of interface of edge router
   Pri-Router(config-crypto-map)# set transform-set headTobranch
   Pri-Router(config-crypto-map)# pfs group5
   Pri-Router(config-crypto-map)# match address 100
   Pri-Router(config-crypto-map)# exit
   Pri-Router(config)# interface FastEthernet0/1
-  Pri-Router(config-if)# crypto map BCAS-VPN  
+  Pri-Router(config-if)# crypto map site-vpn  
 ```
 ### Switch Configuration
 #### Spanning Tree Protocol [STP] Configuration
@@ -186,13 +186,13 @@ switch(config)# ip route 0.0.0.0/0 192.168.1.1
 
 # Network Monitoring Tool Deployment
 
-Nowadays, most organizations are using more complex networking environments, and it’s crucial to have a robust monitoring solution to ensure the stability and performance of their networks. Typically, network monitoring tools play an important role in allowing administrators to track key metrics, detect anomalies, and troubleshoot issues proactively.
+Nowadays, most organizations are using more complex networking environments, and it's crucial to have a robust monitoring solution to ensure the stability and performance of their networks. Typ[...]
 
-For the **Institute** network, as an Network Administrator, I have chosen **Zabbix** for monitoring purposes. Zabbix is a powerful and versatile tool for network monitoring and management. It offers a comprehensive set of features that enable administrators to monitor the health and performance of their network infrastructure effectively.
+For the **Institute** network, as an Network Administrator, I have chosen **Zabbix** for monitoring purposes. Zabbix is a powerful and versatile tool for network monitoring and management. It off[...]
 
-When network issues occur, we use various troubleshooting techniques to identify them. Troubleshooting with Zabbix includes using **ping** or **traceroute** to diagnose connectivity problems by verifying if devices are able to communicate. Additionally, packet capture tools like **Wireshark** allow us to capture and analyze network traffic to identify possible abnormalities like packet loss or unusual patterns indicating issues.
+When network issues occur, we use various troubleshooting techniques to identify them. Troubleshooting with Zabbix includes using **ping** or **traceroute** to diagnose connectivity problems by v[...]
 
-Moreover, logging and event monitoring play an important role in addressing network problems. By analyzing the logs recorded on devices, we can identify errors and warnings that may point to potential issues. Regular configuration reviews also help in preventing network problems caused by misconfigurations.
+Moreover, logging and event monitoring play an important role in addressing network problems. By analyzing the logs recorded on devices, we can identify errors and warnings that may point to pote[...]
 
 * Add a device to Zabbix
 
@@ -210,13 +210,13 @@ Fill out the details of particular device.
 * Information that gathered by NMS from Devices.
 <p align="center">
   <img src="monitor/info/1.png" width="49%" />
- <img src="monitor/info/2.png" width="49%" />
+  <img src="monitor/info/2.png" width="49%" />
 </p>
 
 * Dashboard how looks like when a problem occur and resolved
 <p align="center">
   <img src="monitor/problem/1.png" width="49%" />
- <img src="monitor/problem/2.png" width="49%" />
+  <img src="monitor/problem/2.png" width="49%" />
 </p>
 
 
@@ -238,26 +238,26 @@ To troubleshoot LAN and WAN connectivity issues across different networking laye
    - Check routing tables on routers to confirm that routes are correctly configured and that there are no routing issues.
 
 4. **Transport Layer**:
-   - Examine if any restrictions or issues exist due to firewalls or ACLs (Access Control Lists). These security measures can block traffic and lead to connectivity problems. Ensuring these measures are correctly configured helps address transport layer issues.
+   - Examine if any restrictions or issues exist due to firewalls or ACLs (Access Control Lists). These security measures can block traffic and lead to connectivity problems. Ensuring these measu[...]
 
-By following the steps of the OSI model to troubleshoot issues at different network layers, we can pinpoint LAN and WAN connectivity problems and resolve them to ensure smooth communication across networks.
+By following the steps of the OSI model to troubleshoot issues at different network layers, we can pinpoint LAN and WAN connectivity problems and resolve them to ensure smooth communication acros[...]
 
 ___
 
 ## Documentation of Troubleshooting Methods
 
-The troubleshooting process begins by gathering information from various sources such as user reports, tickets, and monitoring tools. Assessing the impact of the problem on network operations and identifying the affected devices or services is essential to initiate the resolution process. Tools like network diagrams, configuration files, system logs, and records of recent changes help provide context and insight into potential causes.
+The troubleshooting process begins by gathering information from various sources such as user reports, tickets, and monitoring tools. Assessing the impact of the problem on network operations and[...]
 
 ### Steps for Troubleshooting:
 
 1. **Initial Diagnosis**:
-   - Conduct initial checks to identify common problems like physical connection issues, misconfigurations, or hardware failure. Tools like `ping` and `traceroute` can be used to assess network problems.
+   - Conduct initial checks to identify common problems like physical connection issues, misconfigurations, or hardware failure. Tools like `ping` and `traceroute` can be used to assess network p[...]
 
 2. **Formulate a Hypothesis**:
-   - Based on gathered information, formulate a hypothesis about the probable cause of the issue. Research potential causes using vendor documentation and online resources to refine the hypothesis.
+   - Based on gathered information, formulate a hypothesis about the probable cause of the issue. Research potential causes using vendor documentation and online resources to refine the hypothesi[...]
 
 3. **Test the Hypothesis**:
-   - Test the hypothesis by conducting further tests and analysis to gather additional data. Use diagnostic tools and techniques to verify the root cause of the issue and assess its impact on network functionality.
+   - Test the hypothesis by conducting further tests and analysis to gather additional data. Use diagnostic tools and techniques to verify the root cause of the issue and assess its impact on net[...]
 
 4. **Develop a Plan of Action**:
    - Create a structured strategy to address the identified root cause. Consider variables like impact, timeliness, severity, and resource availability when developing the plan.
@@ -269,30 +269,30 @@ The troubleshooting process begins by gathering information from various sources
    - After implementation, verify the network's functionality to ensure that the problem has been resolved. Perform comprehensive testing and performance monitoring to ensure system stability.
 
 7. **Documentation**:
-   - Document all steps completed during the diagnosis and resolution process. This includes test results, configuration modifications, and troubleshooting techniques. Preventive procedures and routine maintenance also help maintain network stability and reduce the likelihood of future issues.
+   - Document all steps completed during the diagnosis and resolution process. This includes test results, configuration modifications, and troubleshooting techniques. Preventive procedures and r[...]
 
 ---
 
 ## Evaluating Troubleshooting Methods for Enterprise-Wide Networking Issues
 
-For enterprise-wide networking issues, it is crucial to use a variety of troubleshooting methods to effectively identify and resolve root causes. Key methods for addressing potential issues include:
+For enterprise-wide networking issues, it is crucial to use a variety of troubleshooting methods to effectively identify and resolve root causes. Key methods for addressing potential issues inclu[...]
 
 1. **Ping and Traceroute**:
-   - Basic tools used to diagnose connectivity problems and trace the path of data packets through a network. `Ping` checks if devices can communicate, while `Traceroute` maps the route packets take. These tools are easy to use but might not uncover complex issues in large-scale networks.
+   - Basic tools used to diagnose connectivity problems and trace the path of data packets through a network. `Ping` checks if devices can communicate, while `Traceroute` maps the route packets t[...]
 
 2. **Packet Capture [Wireshark]**:
-   - Wireshark is a powerful tool that allows network administrators to inspect network traffic at a granular level. Analyzing data packets with Wireshark helps identify anomalies, errors, and threats. It is highly effective in uncovering complex network issues.
+   - Wireshark is a powerful tool that allows network administrators to inspect network traffic at a granular level. Analyzing data packets with Wireshark helps identify anomalies, errors, and th[...]
 
 3. **Logging and Event Monitoring**:
-   - Continuous recording of network activities and events helps detect patterns, errors, and abnormalities indicative of network issues. Proper configuration and interpretation of log data are crucial for identifying recurring problems and security risks.
+   - Continuous recording of network activities and events helps detect patterns, errors, and abnormalities indicative of network issues. Proper configuration and interpretation of log data are c[...]
 
 4. **Configuration Review**:
-   - Reviewing network device configurations ensures they are correctly configured and optimized for performance and security. This method helps identify misconfigurations or security flaws that could lead to network issues.
+   - Reviewing network device configurations ensures they are correctly configured and optimized for performance and security. This method helps identify misconfigurations or security flaws that [...]
 
 5. **Network Monitoring Tools**:
-   - Tools like **Zabbix** provide real-time visibility into the performance and health of network devices and services. They monitor key metrics, generate alerts for anomalies, and offer insights into network utilization and availability. Properly configured network monitoring tools are essential for proactively detecting and resolving issues.
+   - Tools like **Zabbix** provide real-time visibility into the performance and health of network devices and services. They monitor key metrics, generate alerts for anomalies, and offer insight[...]
 
-By integrating these methods into a cohesive troubleshooting strategy, network administrators can maintain network stability, reliability, and security. Ongoing training is essential for administrators to effectively utilize these methods.
+By integrating these methods into a cohesive troubleshooting strategy, network administrators can maintain network stability, reliability, and security. Ongoing training is essential for administ[...]
 
 ## Server Configuration
 ### Setting Up Windows Server 2019 for Active Directory, DNS and DHCP.
@@ -379,9 +379,9 @@ ___
   <img src="dns/reverse/12.png" width="49%" />
   <img src="dns/reverse/13.png" width="49%" />
   <img src="dns/reverse/14.png" width="49%" />
- <img src="dns/reverse/15.png" width="49%" />
- <img src="dns/reverse/16.png" width="49%" />
- <img src="dns/reverse/1u.png" width="49%" />
+  <img src="dns/reverse/1u.png" width="49%" />
+  <img src="dns/reverse/16.png" width="49%" />
+  <img src="dns/reverse/1u.png" width="49%" />
 </p>
 
 ___
